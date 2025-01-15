@@ -186,7 +186,7 @@ load _helpers
 
   local value=$(echo $object |
       yq -r 'map(select(.name=="AGENT_INJECT_TLS_AUTO")) | .[] .value' | tee /dev/stderr)
-  [ "${value}" = "release-name-vault-agent-injector-cfg" ]
+  [ "${value}" = "release-name-vhsm-agent-injector-cfg" ]
 
   # helm template does uses current context namespace and ignores namespace flags, so
   # discover the targeted namespace so we can check the rendered value correctly.
@@ -266,7 +266,7 @@ load _helpers
 
   local value=$(echo $object |
       yq -r 'map(select(.name=="AGENT_INJECT_VAULT_ADDR")) | .[] .value' | tee /dev/stderr)
-  [ "${value}" = "http://not-external-test-vault.default.svc:8200" ]
+  [ "${value}" = "http://not-external-test-vhsm.default.svc:8200" ]
 }
 
 @test "injector/deployment: default authPath" {
