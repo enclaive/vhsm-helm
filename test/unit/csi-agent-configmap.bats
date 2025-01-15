@@ -18,7 +18,7 @@ load _helpers
       --set "csi.enabled=true" \
       . | tee /dev/stderr |
       yq -r '.metadata.name' | tee /dev/stderr)
-  [ "${actual}" = "release-name-vault-csi-provider-agent-config" ]
+  [ "${actual}" = "release-name-vhsm-csi-provider-agent-config" ]
 }
 
 @test "csi/Agent-ConfigMap: namespace" {
@@ -49,7 +49,7 @@ load _helpers
       --set 'injector.externalVaultAddr=http://vault-outside' \
       . | tee /dev/stderr |
       yq -r '.data["config.hcl"]' | tee /dev/stderr)
-  echo "${actual}" | grep "http://not-external-test-vault.default.svc:8200"
+  echo "${actual}" | grep "http://not-external-test-vhsm.default.svc:8200"
 }
 
 @test "csi/Agent-ConfigMap: Vault addr correctly set for externalVaultAddr" {

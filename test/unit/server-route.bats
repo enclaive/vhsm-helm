@@ -120,7 +120,7 @@ load _helpers
       --set 'server.route.enabled=true' \
       . | tee /dev/stderr |
       yq -r '.spec.to.name' | tee /dev/stderr)
-  [ "${actual}" = "release-name-vault" ]
+  [ "${actual}" = "release-name-vhsm" ]
 }
 
 @test "server/route: OpenShift - route points to main service when not ha and activeService is true" {
@@ -133,7 +133,7 @@ load _helpers
       --set 'server.route.activeService=true' \
       . | tee /dev/stderr |
       yq -r '.spec.to.name' | tee /dev/stderr)
-  [ "${actual}" = "release-name-vault" ]
+  [ "${actual}" = "release-name-vhsm" ]
 }
 
 @test "server/route: OpenShift - route points to active service by when HA by default" {
@@ -146,7 +146,7 @@ load _helpers
       --set 'server.ha.enabled=true' \
       . | tee /dev/stderr |
       yq -r '.spec.to.name' | tee /dev/stderr)
-  [ "${actual}" = "release-name-vault-active" ]
+  [ "${actual}" = "release-name-vhsm-active" ]
 }
 
 @test "server/route: OpenShift - route points to general service by when HA when configured" {
@@ -160,7 +160,7 @@ load _helpers
       --set 'server.ha.enabled=true' \
       . | tee /dev/stderr |
       yq -r '.spec.to.name' | tee /dev/stderr)
-  [ "${actual}" = "release-name-vault" ]
+  [ "${actual}" = "release-name-vhsm" ]
 }
 
 @test "server/route: OpenShift - route termination mode set to default passthrough" {

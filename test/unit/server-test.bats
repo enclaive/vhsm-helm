@@ -43,7 +43,7 @@ load _helpers
       --show-only templates/tests/server-test.yaml  \
       . | tee /dev/stderr |
       yq -r '.metadata.name' | tee /dev/stderr)
-  [ "${actual}" = "release-name-vault-server-test" ]
+  [ "${actual}" = "release-name-vhsm-server-test" ]
 }
 
 @test "server/standalone-server-test-Pod: release metadata.name vault" {
@@ -52,7 +52,7 @@ load _helpers
       --show-only templates/tests/server-test.yaml  \
       . | tee /dev/stderr |
       yq -r '.metadata.name' | tee /dev/stderr)
-  [ "${actual}" = "vault-server-test" ]
+  [ "${actual}" = "vault-vhsm-server-test" ]
 }
 
 @test "server/standalone-server-test-Pod: release metadata.name foo" {
@@ -61,7 +61,7 @@ load _helpers
       --show-only templates/tests/server-test.yaml  \
       . | tee /dev/stderr |
       yq -r '.metadata.name' | tee /dev/stderr)
-  [ "${actual}" = "foo-vault-server-test" ]
+  [ "${actual}" = "foo-vhsm-server-test" ]
 }
 
 @test "server/standalone-server-test-Pod: default server.standalone.enabled" {

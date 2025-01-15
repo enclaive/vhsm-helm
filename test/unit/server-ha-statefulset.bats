@@ -450,7 +450,7 @@ load _helpers
 
   local value=$(echo $object |
       yq -r 'map(select(.name=="VAULT_CLUSTER_ADDR")) | .[] .value' | tee /dev/stderr)
-  [ "${value}" = 'https://$(HOSTNAME).release-name-vault-internal:8201' ]
+  [ "${value}" = 'https://$(HOSTNAME).release-name-vhsm-internal:8201' ]
 }
 
 @test "server/ha-StatefulSet: clusterAddr set to null" {
@@ -465,7 +465,7 @@ load _helpers
 
   local value=$(echo $object |
       yq -r 'map(select(.name=="VAULT_CLUSTER_ADDR")) | .[] .value' | tee /dev/stderr)
-  [ "${value}" = 'https://$(HOSTNAME).release-name-vault-internal:8201' ]
+  [ "${value}" = 'https://$(HOSTNAME).release-name-vhsm-internal:8201' ]
 }
 
 @test "server/ha-StatefulSet: clusterAddr set to custom url" {

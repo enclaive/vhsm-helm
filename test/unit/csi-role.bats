@@ -18,13 +18,13 @@ load _helpers
       --set "csi.enabled=true" \
       . | tee /dev/stderr |
       yq -r '.metadata.name' | tee /dev/stderr)
-  [ "${actual}" = "release-name-vault-csi-provider-role" ]
+  [ "${actual}" = "release-name-vhsm-csi-provider-role" ]
   local actual=$(helm template \
       --show-only templates/csi-role.yaml \
       --set "csi.enabled=true" \
       . | tee /dev/stderr |
       yq -r '.rules[0].resourceNames[0]' | tee /dev/stderr)
-  [ "${actual}" = "vault-csi-provider-hmac-key" ]
+  [ "${actual}" = "vhsm-csi-provider-hmac-key" ]
 }
 
 @test "csi/Role: namespace" {

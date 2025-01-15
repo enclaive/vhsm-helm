@@ -1,3 +1,23 @@
+# vHSM Helm Chart
+
+## Push
+
+```sh
+helm package vault-helm
+helm push vhsm-0.28.1.tgz oci://harbor.enclaive.cloud/enclaive-dev
+```
+
+## Usage
+
+```sh
+helm install vhsm oci://harbor.enclaive.cloud/enclaive-dev/vhsm \
+  --version 0.28.1 \
+  --set injector.enabled=false \
+  --set server.extraEnvironmentVars.ENCLAIVE_LICENCE="$licence"
+```
+
+---
+
 # Vault Helm Chart
 
 > :warning: **Please note**: We take Vault's security and our users' trust very seriously. If 

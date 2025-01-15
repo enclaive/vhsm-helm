@@ -1,10 +1,10 @@
 
-Thank you for installing HashiCorp Vault!
+Thank you for installing Enclaive vHSM!
 
-Now that you have deployed Vault, you should look over the docs on using
+Now that you have deployed vHSM, you should look over the docs on using
 Vault with Kubernetes available here:
 
-https://developer.hashicorp.com/vault/docs
+https://docs.enclaive.cloud/virtual-hsm
 
 
 Your release is named {{ .Release.Name }}. To learn more about the release, try:

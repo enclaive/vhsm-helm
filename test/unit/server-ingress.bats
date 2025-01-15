@@ -184,7 +184,7 @@ load _helpers
       --set 'server.service.enabled=true' \
       . | tee /dev/stderr |
       yq -r '.spec.rules[0].http.paths[0].backend.service.name' | tee /dev/stderr)
-  [ "${actual}" = "release-name-vault-active" ]
+  [ "${actual}" = "release-name-vhsm-active" ]
 }
 
 @test "server/ingress: uses regular service when configured with ha - yaml" {
@@ -199,7 +199,7 @@ load _helpers
       --set 'server.service.enabled=true' \
       . | tee /dev/stderr |
       yq -r '.spec.rules[0].http.paths[0].backend.service.name' | tee /dev/stderr)
-  [ "${actual}" = "release-name-vault" ]
+  [ "${actual}" = "release-name-vhsm" ]
 }
 
 @test "server/ingress: uses regular service when not ha - yaml" {
@@ -213,7 +213,7 @@ load _helpers
       --set 'server.service.enabled=true' \
       . | tee /dev/stderr |
       yq -r '.spec.rules[0].http.paths[0].backend.service.name' | tee /dev/stderr)
-  [ "${actual}" = "release-name-vault" ]
+  [ "${actual}" = "release-name-vhsm" ]
 }
 
 @test "server/ingress: k8s 1.26.3 uses correct service format when not ha - yaml" {
@@ -228,7 +228,7 @@ load _helpers
       --kube-version 1.26.3 \
       . | tee /dev/stderr |
       yq -r '.spec.rules[0].http.paths[0].backend.service.name' | tee /dev/stderr)
-  [ "${actual}" = "release-name-vault" ]
+  [ "${actual}" = "release-name-vhsm" ]
 }
 
 @test "server/ingress: uses regular service when not ha and activeService is true - yaml" {
@@ -243,7 +243,7 @@ load _helpers
       --set 'server.service.enabled=true' \
       . | tee /dev/stderr |
       yq -r '.spec.rules[0].http.paths[0].backend.service.name' | tee /dev/stderr)
-  [ "${actual}" = "release-name-vault" ]
+  [ "${actual}" = "release-name-vhsm" ]
 }
 
 @test "server/ingress: pathType is added to Kubernetes version == 1.26.3" {

@@ -26,7 +26,7 @@ load _helpers
       --set 'server.dev.enabled=true' \
       . | tee /dev/stderr |
       yq -r '.metadata.name' | tee /dev/stderr)
-  [ "${actual}" = "release-name-vault" ]
+  [ "${actual}" = "release-name-vhsm" ]
 
 }
 
