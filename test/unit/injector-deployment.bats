@@ -194,7 +194,7 @@ load _helpers
 
   local value=$(echo $object |
       yq -r 'map(select(.name=="AGENT_INJECT_TLS_AUTO_HOSTS")) | .[] .value' | tee /dev/stderr)
-  [ "${value}" = "release-name-vault-agent-injector-svc,release-name-vault-agent-injector-svc.${namespace:-default},release-name-vault-agent-injector-svc.${namespace:-default}.svc" ]
+  [ "${value}" = "release-name-vhsm-agent-injector-svc,release-name-vhsm-agent-injector-svc.${namespace:-default},release-name-vhsm-agent-injector-svc.${namespace:-default}.svc" ]
 }
 
 @test "injector/deployment: manual TLS adds volume mount" {
