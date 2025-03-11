@@ -4,14 +4,14 @@
 
 ```sh
 helm package vault-helm
-helm push vhsm-0.28.1.tgz oci://harbor.enclaive.cloud/enclaive-dev
+helm push vhsm-0.28.2.tgz oci://harbor.enclaive.cloud/enclaive-dev
 ```
 
 ## Usage
 
 ```sh
 helm install vhsm oci://harbor.enclaive.cloud/enclaive-dev/vhsm \
-  --version 0.28.1 \
+  --version 0.28.2 \
   --set injector.enabled=false \
   --set server.extraEnvironmentVars.ENCLAIVE_LICENCE="$licence"
 ```
