@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: backend-servicemonitor
+  namespace: emcp-dev
+  labels:
+    release: prometheus  # or whatever your Prometheus Operator release label is
+spec:
+  selector:
+    matchLabels:
+      app: backend
+  namespaceSelector:
+    matchNames:
+      - emcp-dev
+  endpoints:
+    - port: web        # matches 'name: web' in the Service
+      path: /metrics
+      interval: 15s
