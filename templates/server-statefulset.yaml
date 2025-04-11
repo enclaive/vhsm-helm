@@ -212,7 +212,7 @@ spec:
                   # Adding a sleep here to give the pod eviction a
                   # chance to propagate, so requests will not be made
                   # to this pod while it's terminating
-                  "sleep {{ .Values.server.preStopSleepSeconds }} && kill -SIGTERM $(pidof vault)",
+                  "sleep {{ .Values.server.preStopSleepSeconds }} && kill -SIGTERM $(pidof vhsm)",
                 ]
             {{- if .Values.server.postStart }}
             postStart:
