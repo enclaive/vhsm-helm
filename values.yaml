@@ -76,7 +76,7 @@ injector:
   # required.
   agentImage:
     repository: "harbor.enclaive.cloud/vhsm/vhsm-aws"
-    tag: "gh-run-14064060161-1-18"
+    tag: "gh-run-14196053179-1-20"
 
   # The default values for the injected Vault Agent containers.
   agentDefaults:
@@ -377,7 +377,7 @@ server:
 
   image:
     repository: "harbor.enclaive.cloud/vhsm/vhsm-aws"
-    tag: "gh-run-14064060161-1-18"
+    tag: "gh-run-14196053179-1-20"
     # Overrides the default Image Pull Policy
     pullPolicy: IfNotPresent
 
@@ -1172,7 +1172,7 @@ csi:
 
     image:
       repository: "harbor.enclaive.cloud/vhsm/vhsm-aws"
-      tag: "gh-run-14064060161-1-18"
+      tag: "gh-run-14196053179-1-20"
       pullPolicy: IfNotPresent
 
     logFormat: standard
