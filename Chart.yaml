@@ -3,7 +3,7 @@
 
 apiVersion: v2
 name: vhsm
-version: 0.28.5
+version: 0.28.6
 appVersion: 1.4.3-0
 kubeVersion: ">= 1.20.0-0"
 description: Official Enclaive vHSM Chart
