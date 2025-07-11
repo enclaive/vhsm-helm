@@ -1,36 +1,12 @@
-# vHSM Helm Chart
+# Virtual HSM Helm Chart
 
-## Push
-
-```sh
-helm package vault-helm
-helm push vhsm-0.28.1.tgz oci://harbor.enclaive.cloud/enclaive-dev
-```
-
-## Usage
-
-```sh
-helm install vhsm oci://harbor.enclaive.cloud/enclaive-dev/vhsm \
-  --version 0.28.1 \
-  --set injector.enabled=false \
-  --set server.extraEnvironmentVars.ENCLAIVE_LICENCE="$licence"
-```
-
----
-
-# Vault Helm Chart
-
-> :warning: **Please note**: We take Vault's security and our users' trust very seriously. If 
-you believe you have found a security issue in Vault Helm, _please responsibly disclose_ 
-by contacting us at [security@hashicorp.com](mailto:security@hashicorp.com).
-
-This repository contains the official HashiCorp Helm chart for installing
-and configuring Vault on Kubernetes. This chart supports multiple use
-cases of Vault on Kubernetes depending on the values provided.
+This repository contains the official enclaive Helm chart for installing
+and configuring vHSM, comprising the key management Vault and attestation verification service Nitride, on Kubernetes. This chart supports multiple use
+cases of Vault and Nitride on Kubernetes depending on the values provided.
 
 For full documentation on this Helm chart along with all the ways you can
 use Vault with Kubernetes, please see the
-[Vault and Kubernetes documentation](https://developer.hashicorp.com/vault/docs/platform/k8s).
+[vHSM documentation](https://developer.hashicorp.com/vault/docs/platform/k8s](https://docs.enclaive.cloud/virtual-hsm).
 
 ## Prerequisites
 
@@ -50,14 +26,11 @@ The versions required are:
 To install the latest version of this chart, add the Hashicorp helm repository
 and run `helm install`:
 
-```console
-$ helm repo add hashicorp https://helm.releases.hashicorp.com
-"hashicorp" has been added to your repositories
-
-$ helm install vault hashicorp/vault
+```sh
+helm install vhsm oci://harbor.enclaive.cloud/vhsm \
+  --version 0.28.1 \
+  --set injector.enabled=false \
+  --set server.extraEnvironmentVars.ENCLAIVE_LICENCE="$licence"
 ```
 
-Please see the many options supported in the `values.yaml` file. These are also
-fully documented directly on the [Vault
-website](https://developer.hashicorp.com/vault/docs/platform/k8s/helm) along with more
-detailed installation instructions.
+Please see the many options supported in the `values.yaml` file. 
