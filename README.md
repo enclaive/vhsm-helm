@@ -6,7 +6,7 @@ cases of Vault and Nitride on Kubernetes depending on the values provided.
 
 For full documentation on this Helm chart along with all the ways you can
 use Vault with Kubernetes, please see the
-[vHSM documentation](https://developer.hashicorp.com/vault/docs/platform/k8s](https://docs.enclaive.cloud/virtual-hsm).
+[vHSM documentation](https://docs.enclaive.cloud/virtual-hsm).
 
 ## Prerequisites
 
@@ -27,8 +27,8 @@ To install the latest version of this chart, add the Hashicorp helm repository
 and run `helm install`:
 
 ```sh
-helm install vhsm oci://harbor.enclaive.cloud/vhsm \
-  --version 0.28.1 \
+helm pull oci://harbor.enclaive.cloud/vhsm/vhsm \ 
+  --version 0.28.6 \
   --set injector.enabled=false \
   --set server.extraEnvironmentVars.ENCLAIVE_LICENCE="$licence"
 ```
