@@ -1,0 +1,23 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: backend-servicemonitor
+  namespace: emcp-prod
+  labels:
+    app: backend
+    release: prometheus  # Adjust if needed
+spec:
+  selector:
+    matchLabels:
+      app: backend
+  namespaceSelector:
+    matchNames:
+      - emcp-prod
+  endpoints:
+    - port: web         # Must match the port name in your Service
+      path: /metrics
+      interval: 30s
+      scheme: http
+  targetLabels:
+    - app
+  sampleLimit: 5000
