@@ -359,7 +359,7 @@ load _helpers
   [ "${actual}" = "null" ]
 }
 
-@test "server/Service: vault port name is http, when tlsDisable is true" {
+@test "server/Service: vhsm port name is http, when tlsDisable is true" {
   cd `chart_dir`
 
   local actual=$(helm template \
@@ -370,7 +370,7 @@ load _helpers
   [ "${actual}" = "http" ]
 }
 
-@test "server/Service: vault port name is https, when tlsDisable is false" {
+@test "server/Service: vhsm port name is https, when tlsDisable is false" {
   cd `chart_dir`
 
   local actual=$(helm template \

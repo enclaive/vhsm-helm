@@ -8,7 +8,7 @@ appVersion: 1.4.3-0
 kubeVersion: ">= 1.20.0-0"
 description: Official Enclaive vHSM Chart
 home: https://www.enclaive.io
-keywords: ["vault", "security", "encryption", "secrets", "management", "automation", "infrastructure"]
+keywords: ["vhsm", "security", "encryption", "secrets", "management", "automation", "infrastructure"]
 sources:
   - https://github.com/enclaive/vhsm
   - https://github.com/enclaive/vhsm-helm

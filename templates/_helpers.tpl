@@ -184,7 +184,7 @@ extra volumes the user may have specified (such as a secret with TLS).
 {{- end -}}
 
 {{/*
-Set's the args for custom command to render the Vault configuration
+Set's the args for custom command to render the vHSM configuration
 file with IP addresses to make the out of box experience easier
 for users looking to use this chart with Consul Helm.
 */}}
@@ -198,10 +198,10 @@ for users looking to use this chart with Consul Helm.
             [ -n "${API_ADDR}" ] && sed -Ei "s|API_ADDR|${API_ADDR?}|g" /tmp/storageconfig.hcl;
             [ -n "${TRANSIT_ADDR}" ] && sed -Ei "s|TRANSIT_ADDR|${TRANSIT_ADDR?}|g" /tmp/storageconfig.hcl;
             [ -n "${RAFT_ADDR}" ] && sed -Ei "s|RAFT_ADDR|${RAFT_ADDR?}|g" /tmp/storageconfig.hcl;
-            /usr/local/bin/docker-entrypoint.sh vault server -config=/tmp/storageconfig.hcl {{ .Values.server.extraArgs }}
+            /usr/local/bin/docker-entrypoint.sh vhsm server -config=/tmp/storageconfig.hcl {{ .Values.server.extraArgs }}
    {{ else if eq .mode "dev" }}
           - |
-            /usr/local/bin/docker-entrypoint.sh vault server -dev {{ .Values.server.extraArgs }}
+            /usr/local/bin/docker-entrypoint.sh vhsm server -dev {{ .Values.server.extraArgs }}
   {{ end }}
 {{- end -}}
 
@@ -387,7 +387,7 @@ securityContext for the statefulset pod template.
 {{- end -}}
 
 {{/*
-securityContext for the statefulset vault container
+securityContext for the statefulset vhsm container
 */}}
 {{- define "server.statefulSet.securityContext.container" -}}
   {{- if .Values.server.statefulSet.securityContext.container }}
@@ -476,7 +476,7 @@ Sets extra route annotations
 {{- end -}}
 
 {{/*
-Sets extra vault server Service annotations
+Sets extra vhsm server Service annotations
 */}}
 {{- define "vault.service.annotations" -}}
   {{- if .Values.server.service.annotations }}
@@ -490,7 +490,7 @@ Sets extra vault server Service annotations
 {{- end -}}
 
 {{/*
-Sets extra vault server Service (active) annotations
+Sets extra vhsm server Service (active) annotations
 */}}
 {{- define "vault.service.active.annotations" -}}
   {{- if .Values.server.service.active.annotations }}
@@ -503,7 +503,7 @@ Sets extra vault server Service (active) annotations
   {{- end }}
 {{- end -}}
 {{/*
-Sets extra vault server Service annotations
+Sets extra vhsm server Service annotations
 */}}
 {{- define "vault.service.standby.annotations" -}}
   {{- if .Values.server.service.standby.annotations }}

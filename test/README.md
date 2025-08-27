@@ -1,6 +1,6 @@
-# Vault Helm Tests
+# vHSM Helm Tests
 
-## Running Vault Helm Acceptance tests
+## Running vHSM Helm Acceptance tests
 
 The Makefile at the top level of this repo contains a few target that should help with running acceptance tests in your own GKE instance or in a kind cluster.
 
@@ -37,7 +37,7 @@ editing will be required, since several properties accept multiple data types.
 
 ## Helm test
 
-Vault Helm also contains a simple helm test under
+vHSM Helm also contains a simple helm test under
 [templates/tests/](../templates/tests/) that may be run against a helm release:
 
     helm test <RELEASE_NAME>

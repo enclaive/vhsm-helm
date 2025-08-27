@@ -1,11 +1,11 @@
 # Virtual HSM Helm Chart
 
 This repository contains the official enclaive Helm chart for installing
-and configuring vHSM, comprising the key management Vault and attestation verification service Nitride, on Kubernetes. This chart supports multiple use
-cases of Vault and Nitride on Kubernetes depending on the values provided.
+and configuring vHSM, comprising the key management vHSM and attestation verification service Nitride, on Kubernetes. This chart supports multiple use
+cases of vHSM and Nitride on Kubernetes depending on the values provided.
 
 For full documentation on this Helm chart along with all the ways you can
-use Vault with Kubernetes, please see the
+use vHSM with Kubernetes, please see the
 [vHSM documentation](https://docs.enclaive.cloud/virtual-hsm).
 
 ## Prerequisites

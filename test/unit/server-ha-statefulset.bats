@@ -478,18 +478,18 @@ load _helpers
       --show-only templates/server-statefulset.yaml  \
       --set 'server.ha.enabled=true' \
       --set 'server.ha.raft.enabled=true' \
-       --set 'server.ha.clusterAddr=http://$(HOSTNAME).release-name-vault-internal:8201' \
+       --set 'server.ha.clusterAddr=http://$(HOSTNAME).release-name-vhsm-internal:8201' \
       . | tee /dev/stderr |
       yq -r '.spec.template.spec.containers[0].env' | tee /dev/stderr)
 
   local value=$(echo $object |
       yq -r 'map(select(.name=="VAULT_CLUSTER_ADDR")) | .[] .value' | tee /dev/stderr)
-  [ "${value}" = 'http://$(HOSTNAME).release-name-vault-internal:8201' ]
+  [ "${value}" = 'http://$(HOSTNAME).release-name-vhsm-internal:8201' ]
 }
 
 @test "server/ha-StatefulSet: clusterAddr gets quoted" {
   cd `chart_dir`
-  local customUrl='http://$(HOSTNAME).release-name-vault-internal:8201'
+  local customUrl='http://$(HOSTNAME).release-name-vhsm-internal:8201'
   local rendered=$(helm template \
       --show-only templates/server-statefulset.yaml  \
       --set 'server.ha.enabled=true' \
@@ -500,7 +500,7 @@ load _helpers
 
 local value=$(echo $rendered |
       yq -Y '.' | tee /dev/stderr)
-  [ "${value}" = 'value: "http://$(HOSTNAME).release-name-vault-internal:8201"' ]
+  [ "${value}" = 'value: "http://$(HOSTNAME).release-name-vhsm-internal:8201"' ]
 }
 
 #--------------------------------------------------------------------

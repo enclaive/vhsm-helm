@@ -1,4 +1,4 @@
-TEST_IMAGE?=vault-helm-test
+TEST_IMAGE ?= vhsm-helm-test
 
 # set to run a single test - e.g acceptance/server-ha-enterprise-dr.bats
 ACCEPTANCE_TESTS?=acceptance
@@ -10,7 +10,7 @@ UNIT_TESTS_FILTER?='.*'
 LOCAL_ACCEPTANCE_TESTS?=false
 
 # kind cluster name
-KIND_CLUSTER_NAME?=vault-helm
+KIND_CLUSTER_NAME ?= vhsm-helm
 
 # kind k8s version
 KIND_K8S_VERSION?=v1.29.2

@@ -25,33 +25,33 @@ load _helpers
   wait_for_running $(name_prefix)-0
 
   # Sealed, not initialized
-  wait_for_sealed_vault $(name_prefix)-0
+  wait_for_sealed_vhsm $(name_prefix)-0
 
-  # Vault Init
+  # vhsm Init
   local token=$(kubectl exec -ti "$(name_prefix)-0" -- \
-    vault operator init -format=json -n 1 -t 1 | \
+    vhsm operator init -format=json -n 1 -t 1 | \
     jq -r '.unseal_keys_b64[0]')
   [ "${token}" != "" ]
 
-  # Vault Unseal
-  local pods=($(kubectl get pods --selector='app.kubernetes.io/name=vault' -o json | jq -r '.items[].metadata.name'))
+  # vhsm Unseal
+  local pods=($(kubectl get pods --selector='app.kubernetes.io/name=vhsm' -o json | jq -r '.items[].metadata.name'))
   for pod in "${pods[@]}"
   do
-      kubectl exec -ti ${pod} -- vault operator unseal ${token}
+      kubectl exec -ti ${pod} -- vhsm operator unseal ${token}
   done
 
   wait_for_ready "$(name_prefix)-0"
 
   # Unsealed, initialized
-  local sealed_status=$(kubectl exec "$(name_prefix)-0" -- vault status -format=json |
+  local sealed_status=$(kubectl exec "$(name_prefix)-0" -- vhsm status -format=json |
     jq -r '.sealed' )
   [ "${sealed_status}" == "false" ]
 
-  local init_status=$(kubectl exec "$(name_prefix)-0" -- vault status -format=json |
+  local init_status=$(kubectl exec "$(name_prefix)-0" -- vhsm status -format=json |
     jq -r '.initialized')
   [ "${init_status}" == "true" ]
 
-  # unfortunately it can take up to 2 minutes for the vault prometheus job to appear
+  # unfortunately it can take up to 2 minutes for the vhsm prometheus job to appear
   # TODO: investigate how reduce this.
   local job_labels
   local tries=0
@@ -62,17 +62,18 @@ load _helpers
         -- wget -q -O - http://127.0.0.1:9090/api/v1/label/job/values) | tee /dev/stderr )
 
       # Ensure the expected job label was picked up by Prometheus
-      [ "$(echo "${job_labels}" | jq 'any(.data[]; . == "vault-internal")')" = "true" ] && break
+      [ "$(echo "${job_labels}" | jq 'any(.data[]; . == "vhsm-internal")')" = "true" ] && break
 
       ((++tries))
       sleep .5
     done
 
+  [ "$(echo "${job_labels}" | jq 'any(.data[]; . == "vhsm-internal")')" = "true" ]
 
   # Ensure the expected job is "up"
   local job_up=$( ( kubectl exec -n acceptance svc/prometheus-kube-prometheus-prometheus \
     -c prometheus \
-    -- wget -q -O - 'http://127.0.0.1:9090/api/v1/query?query=up{job="vault-internal"}' ) | \
+    -- wget -q -O - 'http://127.0.0.1:9090/api/v1/query?query=up{job="vhsm-internal"}' ) | \
     tee /dev/stderr )
   [ "$(echo "${job_up}" | jq '.data.result[0].value[1]')" = \"1\" ]
 }

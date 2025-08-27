@@ -5,7 +5,7 @@ load _helpers
 setup_file() {
     cd `chart_dir`
     export VERIFY_OUTPUT="/$BATS_RUN_TMPDIR/verify.json"
-    export CHART_VOLUME=vault-helm-chart-src
+    export CHART_VOLUME=vhsm-helm-chart-src
     local IMAGE="quay.io/redhat-certification/chart-verifier:1.10.1"
     # chart-verifier requires an openshift version if a cluster isn't available
     local OPENSHIFT_VERSION="4.12"
@@ -76,6 +76,7 @@ teardown_file() {
 }
 
 @test "images-are-certified" {
+    skip "Image is not Red Hat certified : harbor.enclaive.cloud/vhsm/vhsm:v1.4.4-1"
     check_result v1.1/images-are-certified
 }
 

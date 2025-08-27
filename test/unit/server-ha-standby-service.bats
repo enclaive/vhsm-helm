@@ -214,7 +214,7 @@ load _helpers
   [ "${actual}" = "null" ]
 }
 
-@test "server/ha-standby-Service: vault port name is http, when tlsDisable is true" {
+@test "server/ha-standby-Service: vhsm port name is http, when tlsDisable is true" {
   cd `chart_dir`
   local actual=$(helm template \
       --show-only templates/server-ha-standby-service.yaml \
@@ -225,7 +225,7 @@ load _helpers
   [ "${actual}" = "http" ]
 }
 
-@test "server/ha-standby-Service: vault port name is https, when tlsDisable is false" {
+@test "server/ha-standby-Service: vhsm port name is https, when tlsDisable is false" {
   cd `chart_dir`
   local actual=$(helm template \
       --show-only templates/server-ha-standby-service.yaml \

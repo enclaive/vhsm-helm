@@ -70,25 +70,25 @@ The following are the instructions for running bats tests using a Docker contain
 #### Prerequisites
 
 * Docker installed
-* `vault-helm` checked out locally
+* `vhsm-helm` checked out locally
 
 #### Test
 
-**Note:** the following commands should be run from the `vault-helm` directory.
+**Note:** the following commands should be run from the `vhsm-helm` directory.
 
 First, build the Docker image for running the tests:
 
 ```shell
-docker build -f ${PWD}/test/docker/Test.dockerfile ${PWD}/test/docker/ -t vault-helm-test
+docker build -f ${PWD}/test/docker/Test.dockerfile ${PWD}/test/docker/ -t vhsm-helm-test
 ```
 Next, execute the tests with the following commands:
 ```shell
-docker run -it --rm -v "${PWD}:/test" vault-helm-test bats /test/test/unit
+docker run -it --rm -v "${PWD}:/test" vhsm-helm-test bats /test/test/unit
 ```
 It's possible to only run specific bats tests using regular expressions. 
-For example, the following will run only tests with "injector" in the name:
+For example, the following will run only tests with "server" in the name:
 ```shell
-docker run -it --rm -v "${PWD}:/test" vault-helm-test bats /test/test/unit -f "injector"
+docker run -it --rm -v "${PWD}:/test" vhsm-helm-test bats /test/test/unit -f "server"
 ```
 
 ### Test Manually

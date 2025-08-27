@@ -46,13 +46,13 @@ load _helpers
   [ "${actual}" = "release-name-vhsm-server-test" ]
 }
 
-@test "server/standalone-server-test-Pod: release metadata.name vault" {
+@test "server/standalone-server-test-Pod: release metadata.name vhsm" {
   cd `chart_dir`
-  local actual=$(helm template vault \
+  local actual=$(helm template vhsm \
       --show-only templates/tests/server-test.yaml  \
       . | tee /dev/stderr |
       yq -r '.metadata.name' | tee /dev/stderr)
-  [ "${actual}" = "vault-vhsm-server-test" ]
+  [ "${actual}" = "vhsm-server-test" ]
 }
 
 @test "server/standalone-server-test-Pod: release metadata.name foo" {
@@ -216,14 +216,14 @@ load _helpers
   local object=$(helm template \
       --show-only templates/tests/server-test.yaml  \
       --set 'server.volumeMounts[0].name=plugins' \
-      --set 'server.volumeMounts[0].mountPath=/usr/local/libexec/vault' \
+      --set 'server.volumeMounts[0].mountPath=/usr/local/libexec/vhsm' \
       --set 'server.volumeMounts[0].readOnly=true' \
       . | tee /dev/stderr |
       yq -r '.spec.containers[0].volumeMounts[] | select(.name == "plugins")' | tee /dev/stderr)
 
   local actual=$(echo $object |
       yq -r '.mountPath' | tee /dev/stderr)
-  [ "${actual}" = "/usr/local/libexec/vault" ]
+  [ "${actual}" = "/usr/local/libexec/vhsm" ]
 
   local actual=$(echo $object |
       yq -r '.readOnly' | tee /dev/stderr)

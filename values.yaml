@@ -134,7 +134,7 @@ server:
   # This is useful if you need to run a script to provision TLS certificates or
   # write out configuration files in a dynamic way.
   extraInitContainers: null
-  # # This example installs a plugin pulled from github into the /usr/local/libexec/vault/oauthapp folder,
+  # # This example installs a plugin pulled from github into the /usr/local/libexec/vhsm/oauthapp folder,
   # # which is defined in the volumes value.
   # - name: oauthapp
   #   image: "alpine"
@@ -143,11 +143,11 @@ server:
   #     - cd /tmp &&
   #       wget https://github.com/puppetlabs/vault-plugin-secrets-oauthapp/releases/download/v1.2.0/vault-plugin-secrets-oauthapp-v1.2.0-linux-amd64.tar.xz -O oauthapp.xz &&
   #       tar -xf oauthapp.xz &&
-  #       mv vault-plugin-secrets-oauthapp-v1.2.0-linux-amd64 /usr/local/libexec/vault/oauthapp &&
-  #       chmod +x /usr/local/libexec/vault/oauthapp
+  #       mv vault-plugin-secrets-oauthapp-v1.2.0-linux-amd64 /usr/local/libexec/vhsm/oauthapp &&
+  #       chmod +x /usr/local/libexec/vhsm/oauthapp
   #   volumeMounts:
   #     - name: plugins
-  #       mountPath: /usr/local/libexec/vault
+  #       mountPath: /usr/local/libexec/vhsm
 
   # extraContainers is a list of sidecar containers. Specified as a YAML list.
   extraContainers: null
@@ -249,7 +249,7 @@ server:
   # via toYaml rather than pre-processed like the extraVolumes value.
   # The purpose is to make it easy to share volumes between containers.
   volumeMounts: null
-  #   - mountPath: /usr/local/libexec/vault
+  #   - mountPath: /usr/local/libexec/vhsm
   #     name: plugins
   #     readOnly: true
 
@@ -484,10 +484,10 @@ server:
       # GKMS keys must already exist, and the cluster must have a service account
       # that is authorized to access GCP KMS.
       #seal "gcpckms" {
-      #   project     = "vault-helm-dev"
+      #   project     = "vhsm-helm-dev"
       #   region      = "global"
-      #   key_ring    = "vault-helm-unseal-kr"
-      #   crypto_key  = "vault-helm-unseal-key"
+      #   key_ring    = "vhsm-helm-unseal-kr"
+      #   crypto_key  = "vhsm-helm-unseal-key"
       #}
 
       # Example configuration for enabling Prometheus metrics in your config.
@@ -569,10 +569,10 @@ server:
       # GKMS keys must already exist, and the cluster must have a service account
       # that is authorized to access GCP KMS.
       #seal "gcpckms" {
-      #   project     = "vault-helm-dev-246514"
+      #   project     = "vhsm-helm-dev-246514"
       #   region      = "global"
-      #   key_ring    = "vault-helm-unseal-kr"
-      #   crypto_key  = "vault-helm-unseal-key"
+      #   key_ring    = "vhsm-helm-unseal-kr"
+      #   crypto_key  = "vhsm-helm-unseal-key"
       #}
 
       # Example configuration for enabling Prometheus metrics.
