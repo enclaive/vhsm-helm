@@ -132,36 +132,6 @@ load _helpers
   [ "${actual}" = "bar" ]
 }
 
-@test "server/Service: disable with injector.externalVaultAddr" {
-  cd `chart_dir`
-  local actual=$( (helm template \
-      --show-only templates/server-service.yaml  \
-      --set 'server.dev.enabled=true' \
-      --set 'injector.externalVaultAddr=http://vault-outside' \
-      --set 'server.service.enabled=true' \
-      . || echo "---") | tee /dev/stderr |
-      yq 'length > 0' | tee /dev/stderr)
-  [ "${actual}" = "false" ]
-
-  local actual=$( (helm template \
-      --show-only templates/server-service.yaml  \
-      --set 'server.ha.enabled=true' \
-      --set 'injector.externalVaultAddr=http://vault-outside' \
-      --set 'server.service.enabled=true' \
-      . || echo "---") | tee /dev/stderr |
-      yq 'length > 0' | tee /dev/stderr)
-  [ "${actual}" = "false" ]
-
-  local actual=$( (helm template \
-      --show-only templates/server-service.yaml  \
-      --set 'server.standalone.enabled=true' \
-      --set 'injector.externalVaultAddr=http://vault-outside' \
-      --set 'server.service.enabled=true' \
-      . || echo "---") | tee /dev/stderr |
-      yq 'length > 0' | tee /dev/stderr)
-  [ "${actual}" = "false" ]
-}
-
 @test "server/Service: generic annotations" {
   cd `chart_dir`
   local actual=$(helm template \

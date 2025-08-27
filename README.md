@@ -29,7 +29,6 @@ and run `helm install`:
 ```sh
 helm pull oci://harbor.enclaive.cloud/vhsm/vhsm \ 
   --version 0.28.6 \
-  --set injector.enabled=false \
   --set server.extraEnvironmentVars.ENCLAIVE_LICENCE="$licence"
 ```
 
