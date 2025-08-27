@@ -13,7 +13,7 @@ KIND_K8S_VERSION ?= v1.33.2
 
 # Generate json schema for chart values. See test/README.md for more details.
 values-schema:
-	helm schema-gen values.yaml > values.schema.json
+	helm-schema -k title,description,default,required,additionalProperties
 
 test: test-image test-bats
 

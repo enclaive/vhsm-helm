@@ -1,7 +1,7 @@
 # Copyright (c) HashiCorp, Inc.
 # SPDX-License-Identifier: MPL-2.0
 
-# Available parameters and their default values for the Vault chart.
+# Available parameters and their default values for the vHSM chart.
 
 global:
   # enabled is the master enabled switch. Setting this to true or false
@@ -19,9 +19,15 @@ global:
   tlsDisable: true
   # If deploying to OpenShift
   openshift: false
+  # @schema
+  # type: object
+  # @schema
   # Create PodSecurityPolicy for pods
   psp:
     enable: false
+    # @schema
+    # type: [object, string]
+    # @schema
     # Annotation for PodSecurityPolicy.
     # This is a multi-line templated string map, and can also be set as YAML.
     annotations: |
@@ -35,6 +41,9 @@ global:
     prometheusOperator: false
 
 server:
+  # @schema
+  # type: [boolean, string]
+  # @schema
   # If true, or "-" with global.enabled true, Vault server will be installed.
   # See vault.mode in _helpers.tpl for implementation details.
   enabled: "-"
@@ -70,7 +79,13 @@ server:
   # In order to expose the service, use the route section below
   ingress:
     enabled: false
+    # @schema
+    # type: object
+    # @schema
     labels: {}
+    # @schema
+    # type: [object, string]
+    # @schema
     # traffic: external
     annotations: {}
     # |
@@ -89,6 +104,16 @@ server:
     # When HA mode is enabled and K8s service registration is being used,
     # configure the ingress to point to the Vault active service.
     activeService: true
+    # @schema
+    # type: array
+    # items:
+    #   type: object
+    #   properties:
+    #     host:
+    #       type: string
+    #     paths:
+    #       type: array
+    # @schema
     hosts:
       - host: chart-example.local
         paths: []
@@ -117,9 +142,19 @@ server:
     # When HA mode is enabled and K8s service registration is being used,
     # configure the route to point to the Vault active service.
     activeService: true
+    # @schema
+    # type: object
+    # @schema
     labels: {}
+    # @schema
+    # type: [object, string]
+    # @schema
     annotations: {}
     host: chart-example.local
+    # @schema
+    # type: object
+    # properties: {}
+    # @schema
     # tls will be passed directly to the route's TLS config, which
     # can be used to configure other termination methods that terminate
     # TLS at the router
@@ -130,6 +165,9 @@ server:
   # method. See https://developer.hashicorp.com/vault/docs/auth/kubernetes
   authDelegator:
     enabled: true
+  # @schema
+  # type: [null, array]
+  # @schema
   # extraInitContainers is a list of init containers. Specified as a YAML list.
   # This is useful if you need to run a script to provision TLS certificates or
   # write out configuration files in a dynamic way.
@@ -149,6 +187,9 @@ server:
   #     - name: plugins
   #       mountPath: /usr/local/libexec/vhsm
 
+  # @schema
+  # type: [null, array]
+  # @schema
   # extraContainers is a list of sidecar containers. Specified as a YAML list.
   extraContainers: null
   # shareProcessNamespace enables process namespace sharing between Vault and the extraContainers
@@ -156,6 +197,9 @@ server:
   shareProcessNamespace: false
   # extraArgs is a string containing additional Vault server arguments.
   extraArgs: ""
+  # @schema
+  # type: [null, array]
+  # @schema
   # extraPorts is a list of extra ports. Specified as a YAML list.
   # This is useful if you need to add additional ports to the statefulset in dynamic way.
   extraPorts: null
@@ -222,6 +266,9 @@ server:
   # GOOGLE_PROJECT: myproject
   # GOOGLE_APPLICATION_CREDENTIALS: /vault/userconfig/myproject/myproject-creds.json
 
+  # @schema
+  # type: array
+  # @schema
   # extraSecretEnvironmentVars is a list of extra environment variables to set with the stateful set.
   # These variables take value from existing Secret objects.
   extraSecretEnvironmentVars: []
@@ -229,6 +276,9 @@ server:
   #   secretName: vault
   #   secretKey: AWS_SECRET_ACCESS_KEY
 
+  # @schema
+  # type: array
+  # @schema
   # Deprecated: please use 'volumes' instead.
   # extraVolumes is a list of extra volumes to mount. These will be exposed
   # to Vault in the path `/vault/userconfig/<name>/`. The value below is
@@ -238,6 +288,9 @@ server:
   #   name: my-secret
   #   path: null # default is `/vault/userconfig`
 
+  # @schema
+  # type: [null, array]
+  # @schema
   # volumes is a list of volumes made available to all containers. These are rendered
   # via toYaml rather than pre-processed like the extraVolumes value.
   # The purpose is to make it easy to share volumes between containers.
@@ -245,6 +298,9 @@ server:
   #   - name: plugins
   #     emptyDir: {}
 
+  # @schema
+  # type: [null, array]
+  # @schema
   # volumeMounts is a list of volumeMounts for the main server container. These are rendered
   # via toYaml rather than pre-processed like the extraVolumes value.
   # The purpose is to make it easy to share volumes between containers.
@@ -253,6 +309,9 @@ server:
   #     name: plugins
   #     readOnly: true
 
+  # @schema
+  # type: [object, string]
+  # @schema
   # Affinity Settings
   # Commenting out or setting as empty the affinity variable, will allow
   # deployment to single node services such as Minikube
@@ -266,15 +325,24 @@ server:
               app.kubernetes.io/instance: "{{ .Release.Name }}"
               component: server
           topologyKey: kubernetes.io/hostname
+  # @schema
+  # type: [null, array, string]
+  # @schema
   # Topology settings for server pods
   # ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/
   # This should be either a multi-line string or YAML matching the topologySpreadConstraints array
   # in a PodSpec.
   topologySpreadConstraints: []
+  # @schema
+  # type: [null, array, string]
+  # @schema
   # Toleration Settings for server pods
   # This should be either a multi-line string or YAML matching the Toleration array
   # in a PodSpec.
   tolerations: []
+  # @schema
+  # type: [null, object, string]
+  # @schema
   # nodeSelector labels for server pod assignment, formatted as a multi-line string or YAML map.
   # ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
   # Example:
@@ -292,6 +360,10 @@ server:
     #   ports:
     #   - protocol: TCP
     #     port: 443
+    # @schema
+    # type: array
+    # items: {}
+    # @schema
     ingress:
       - from:
           - namespaceSelector: {}
@@ -305,6 +377,9 @@ server:
   # Extra labels to attach to the server pods
   # This should be a YAML map of the labels to apply to the server pods
   extraLabels: {}
+  # @schema
+  # type: [object, string]
+  # @schema
   # Extra annotations to attach to the server pods
   # This can either be YAML or a YAML-formatted multi-line templated string map
   # of the annotations to apply to the server pods
@@ -322,6 +397,9 @@ server:
     # have labeled themselves as the cluster leader with `vault-active: "true"`.
     active:
       enabled: true
+      # @schema
+      # type: [object, string]
+      # @schema
       # Extra annotations for the service definition. This can either be YAML or a
       # YAML-formatted multi-line templated string map of the annotations to apply
       # to the active service.
@@ -330,6 +408,9 @@ server:
     # have labeled themselves as a cluster follower with `vault-active: "false"`.
     standby:
       enabled: true
+      # @schema
+      # type: [object, string]
+      # @schema
       # Extra annotations for the service definition. This can either be YAML or a
       # YAML-formatted multi-line templated string map of the annotations to apply
       # to the standby service.
@@ -382,6 +463,7 @@ server:
     # will be random if left blank.
     #activeNodePort: 30001
 
+    # Deprecation: unused value
     # When HA mode is enabled
     # If type is set to "NodePort", a specific nodePort value can be configured,
     # will be random if left blank.
@@ -389,8 +471,14 @@ server:
 
     # Port on which Vault server is listening
     port: 8200
+    # @schema
+    # type: integer
+    # @schema
     # Target port to which the service should be mapped to
     targetPort: 8200
+    # @schema
+    # type: [object, string]
+    # @schema
     # Extra annotations for the service definition. This can either be YAML or a
     # YAML-formatted multi-line templated string map of the annotations to apply
     # to the service.
@@ -399,20 +487,40 @@ server:
   # storage when using the file or raft backend storage engines.
   # See https://developer.hashicorp.com/vault/docs/configuration/storage to know more
   dataStorage:
+    # @schema
+    # type: [boolean, string]
+    # @schema
     enabled: true
     # Size of the PVC created
     size: 10Gi
     # Location where the PVC will be mounted.
     mountPath: "/vault/data"
+    # @schema
+    # type: [null, string]
+    # @schema
     # Name of the storage class to use.  If null it will use the
     # configured default Storage Class.
     storageClass: null
     # Access Mode of the storage device being used for the PVC
     accessMode: ReadWriteOnce
+    # @schema
+    # type: [object, string]
+    # @schema
     # Annotations to apply to the PVC
     annotations: {}
+    # @schema
+    # type: [object, string]
+    # @schema
     # Labels to apply to the PVC
     labels: {}
+  # @schema
+  # type: object
+  # properties:
+  #   whenDeleted:
+  #     type: string
+  #   whenScaled:
+  #     type: string
+  # @schema
   # Persistent Volume Claim (PVC) retention policy
   # ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#persistentvolumeclaim-retention
   # Example:
@@ -426,18 +534,30 @@ server:
   # /vault/audit
   # See https://developer.hashicorp.com/vault/docs/audit to know more
   auditStorage:
+    # @schema
+    # type: [boolean, string]
+    # @schema
     enabled: false
     # Size of the PVC created
     size: 10Gi
     # Location where the PVC will be mounted.
     mountPath: "/vault/audit"
+    # @schema
+    # type: [null, string]
+    # @schema
     # Name of the storage class to use.  If null it will use the
     # configured default Storage Class.
     storageClass: null
     # Access Mode of the storage device being used for the PVC
     accessMode: ReadWriteOnce
+    # @schema
+    # type: [object, string]
+    # @schema
     # Annotations to apply to the PVC
     annotations: {}
+    # @schema
+    # type: [object, string]
+    # @schema
     # Labels to apply to the PVC
     labels: {}
   # Run Vault in "dev" mode. This requires no further setup, no state management,
@@ -454,12 +574,18 @@ server:
   # the "file" backend.  This mode is not highly available and should not be scaled
   # past a single replica.
   standalone:
+    # @schema
+    # type: [string, boolean]
+    # @schema
     enabled: "-"
     # config is a raw string of default configuration when using a Stateful
     # deployment. Default is to use a PersistentVolumeClaim mounted at /vault/data
     # and store data there. This is only used when using a Replica count of 1, and
     # using a stateful set. This should be HCL.
 
+    # @schema
+    # type: [string, object]
+    # @schema
     # Note: Configuration files are stored in ConfigMaps so sensitive data
     # such as passwords should be either mounted through extraSecretEnvironmentVars
     # or through a Kube secret.  For more information see:
@@ -502,11 +628,21 @@ server:
   # different HA backend.
   ha:
     enabled: false
+    # @schema
+    # type: integer
+    # required: false
+    # @schema
     replicas: 3
+    # @schema
+    # type: [null, string]
+    # @schema
     # Set the api_addr configuration for Vault HA
     # See https://developer.hashicorp.com/vault/docs/configuration#api_addr
     # If set to null, this will be set to the Pod IP Address
     apiAddr: null
+    # @schema
+    # type: [null, string]
+    # @schema
     # Set the cluster_addr confuguration for Vault HA
     # See https://developer.hashicorp.com/vault/docs/configuration#cluster_addr
     # If set to null, this will be set to https://$(HOSTNAME).{{ template "vault.fullname" . }}-internal:8201
@@ -520,6 +656,9 @@ server:
       enabled: false
       # Set the Node Raft ID to the name of the pod
       setNodeId: false
+      # @schema
+      # type: [string, object]
+      # @schema
       # Note: Configuration files are stored in ConfigMaps so sensitive data
       # such as passwords should be either mounted through extraSecretEnvironmentVars
       # or through a Kube secret.  For more information see:
@@ -546,6 +685,9 @@ server:
     # deployment. Default is to use a Consul for its HA storage backend.
     # This should be HCL.
 
+    # @schema
+    # type: [string, object]
+    # @schema
     # Note: Configuration files are stored in ConfigMaps so sensitive data
     # such as passwords should be either mounted through extraSecretEnvironmentVars
     # or through a Kube secret.  For more information see:
@@ -586,6 +728,9 @@ server:
     # that are down simultaneously from voluntary disruptions
     disruptionBudget:
       enabled: true
+      # @schema
+      # type: [null, integer]
+      # @schema
       # maxUnavailable will default to (n/2)-1 where n is the number of
       # replicas. If you'd like a custom value, you can specify an override here.
       maxUnavailable: null
@@ -604,6 +749,9 @@ server:
     # For more details, see https://kubernetes.io/docs/concepts/configuration/secret/#service-account-token-secrets
     # serviceAccount.create must be equal to 'true' in order to use this feature.
     createSecret: false
+    # @schema
+    # type: [object, string]
+    # @schema
     # Extra annotations for the serviceAccount definition. This can either be
     # YAML or a YAML-formatted multi-line templated string map of the
     # annotations to apply to the serviceAccount.
@@ -618,6 +766,9 @@ server:
       enabled: true
   # Settings for the statefulSet used to run Vault.
   statefulSet:
+    # @schema
+    # type: [object, string]
+    # @schema
     # Extra annotations for the statefulSet. This can either be YAML or a
     # YAML-formatted multi-line templated string map of the annotations to apply
     # to the statefulSet.
@@ -636,12 +787,21 @@ server:
     # pod: {}
     # container: {}
     securityContext:
+      # @schema
+      # type: [object, string]
+      # @schema
       pod: {}
+      # @schema
+      # type: [object, string]
+      # @schema
       container: {}
   # Should the server pods run on the host network
   hostNetwork: false
-# Vault UI
+# vHSM UI
 ui:
+  # @schema
+  # type: [boolean, string]
+  # @schema
   # True if you want to create a Service entry for the Vault UI.
   #
   # serviceType can be used to control the type of service created. For
@@ -652,6 +812,9 @@ ui:
   # The service should only contain selectors for active Vault pod
   activeVaultPodOnly: false
   serviceType: "ClusterIP"
+  # @schema
+  # type: [null, integer]
+  # @schema
   serviceNodePort: null
   externalPort: 8200
   targetPort: 8200
@@ -679,6 +842,9 @@ ui:
 
   # loadBalancerIP:
 
+  # @schema
+  # type: [object, string]
+  # @schema
   # Extra annotations to attach to the ui service
   # This can either be YAML or a YAML-formatted multi-line templated string map
   # of the annotations to apply to the ui service
@@ -723,6 +889,8 @@ serverTelemetry:
 
     # Enable deployment of the Vault Server ServiceMonitor CustomResource.
     enabled: false
+    tlsConfig: {}
+    authorization: {}
     # Selector labels to add to the ServiceMonitor.
     # When empty, defaults to:
     #  release: prometheus
