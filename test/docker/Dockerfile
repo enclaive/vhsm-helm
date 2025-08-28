@@ -13,7 +13,6 @@ FROM docker.mirror.hashicorp.services/alpine:latest
 WORKDIR /root
 
 ENV BATS_VERSION "1.3.0"
-ENV TERRAFORM_VERSION "0.12.10"
 
 # base packages
 RUN apk update && apk add --no-cache --virtual .build-deps \
@@ -22,10 +21,10 @@ RUN apk update && apk add --no-cache --virtual .build-deps \
     tar \
     bash \
     openssl \
-    py-pip \
     git \
     make \
-    jq
+    jq \
+    py-pip
 
 # yq
 RUN python3 -m venv venv && \
@@ -33,21 +32,6 @@ RUN python3 -m venv venv && \
     pip install yq && \
     ln -s $PWD/venv/bin/yq /usr/local/bin/yq && \
     deactivate
-
-# gcloud
-RUN curl -OL https://dl.google.com/dl/cloudsdk/channels/rapid/install_google_cloud_sdk.bash && \
-    bash install_google_cloud_sdk.bash --disable-prompts --install-dir='/root/' && \
-    ln -s /root/google-cloud-sdk/bin/gcloud /usr/local/bin/gcloud
-
-# terraform
-RUN curl -sSL https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -o /tmp/tf.zip \
-    && unzip /tmp/tf.zip  \
-    && ln -s /root/terraform /usr/local/bin/terraform
-
-# kubectl
-RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
-    chmod +x ./kubectl && \
-    mv ./kubectl /usr/local/bin/kubectl
 
 # helm
 RUN curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
