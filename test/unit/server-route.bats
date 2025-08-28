@@ -45,7 +45,7 @@ load _helpers
   [ "${actual}" = 'test.com' ]
 }
 
-@test "server/route: OpenShift - vault backend should be added when I specify a path" {
+@test "server/route: OpenShift - vhsm backend should be added when I specify a path" {
   cd `chart_dir`
 
   local actual=$(helm template \

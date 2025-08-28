@@ -535,14 +535,14 @@ load _helpers
   local object=$(helm template \
       --show-only templates/server-statefulset.yaml  \
       --set 'server.volumeMounts[0].name=plugins' \
-      --set 'server.volumeMounts[0].mountPath=/usr/local/libexec/vault' \
+      --set 'server.volumeMounts[0].mountPath=/usr/local/libexec/vhsm' \
       --set 'server.volumeMounts[0].readOnly=true' \
       . | tee /dev/stderr |
       yq -r '.spec.template.spec.containers[0].volumeMounts[] | select(.name == "plugins")' | tee /dev/stderr)
 
   local actual=$(echo $object |
       yq -r '.mountPath' | tee /dev/stderr)
-  [ "${actual}" = "/usr/local/libexec/vault" ]
+  [ "${actual}" = "/usr/local/libexec/vhsm" ]
 
   local actual=$(echo $object |
       yq -r '.readOnly' | tee /dev/stderr)
@@ -1229,7 +1229,7 @@ load _helpers
       --show-only templates/server-statefulset.yaml \
       . | tee /dev/stderr |
       yq -r '.spec.template.spec.containers[0].readinessProbe.exec.command[2]' | tee /dev/stderr)
-  [ "${actual}" = "vault status -tls-skip-verify" ]
+  [ "${actual}" = "vhsm status -tls-skip-verify" ]
 }
 
 @test "server/standalone-StatefulSet: readinessProbe configurable" {
@@ -1560,7 +1560,7 @@ load _helpers
   [[ "${actual}" = "sleep 10 &&"* ]]
 }
 
-@test "server/standalone-StatefulSet: vault port name is http, when tlsDisable is true" {
+@test "server/standalone-StatefulSet: vhsm port name is http, when tlsDisable is true" {
   cd `chart_dir`
 
   local actual=$(helm template \
@@ -1571,7 +1571,7 @@ load _helpers
   [ "${actual}" = "http" ]
 }
 
-@test "server/standalone-StatefulSet: vault replication port name is http-rep, when tlsDisable is true" {
+@test "server/standalone-StatefulSet: vhsm replication port name is http-rep, when tlsDisable is true" {
   cd `chart_dir`
 
   local actual=$(helm template \
@@ -1582,7 +1582,7 @@ load _helpers
   [ "${actual}" = "http-rep" ]
 }
 
-@test "server/standalone-StatefulSet: vault port name is https, when tlsDisable is false" {
+@test "server/standalone-StatefulSet: vhsm port name is https, when tlsDisable is false" {
   cd `chart_dir`
 
   local actual=$(helm template \
@@ -1593,7 +1593,7 @@ load _helpers
   [ "${actual}" = "https" ]
 }
 
-@test "server/standalone-StatefulSet: vault replication port name is https-rep, when tlsDisable is false" {
+@test "server/standalone-StatefulSet: vhsm replication port name is https-rep, when tlsDisable is false" {
   cd `chart_dir`
 
   local actual=$(helm template \

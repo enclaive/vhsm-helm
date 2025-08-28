@@ -128,7 +128,7 @@ spec:
                   fieldPath: metadata.name
             {{- end }}
             - name: HOME
-              value: "/home/vault"
+              value: "/home/vhsm"
             {{- if .Values.server.logLevel }}
             - name: VAULT_LOG_LEVEL
               value: "{{ .Values.server.logLevel }}"
@@ -143,7 +143,7 @@ spec:
           volumeMounts:
           {{ template "vault.mounts" . }}
             - name: home
-              mountPath: /home/vault
+              mountPath: /home/vhsm
           ports:
             - containerPort: 8200
               name: {{ include "vault.scheme" . }}
@@ -168,7 +168,7 @@ spec:
             #   1 - error
             #   2 - sealed
             exec:
-              command: ["/bin/sh", "-ec", "vault status -tls-skip-verify"]
+              command: ["/bin/sh", "-ec", "vhsm status -tls-skip-verify"]
             {{- end }}
             failureThreshold: {{ .Values.server.readinessProbe.failureThreshold }}
             initialDelaySeconds: {{ .Values.server.readinessProbe.initialDelaySeconds }}

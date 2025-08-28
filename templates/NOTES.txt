@@ -2,7 +2,7 @@
 Thank you for installing Enclaive vHSM!
 
 Now that you have deployed vHSM, you should look over the docs on using
-Vault with Kubernetes available here:
+vHSM with Kubernetes available here:
 
 https://docs.enclaive.cloud/virtual-hsm
 

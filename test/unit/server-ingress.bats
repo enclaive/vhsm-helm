@@ -51,7 +51,7 @@ load _helpers
   [ "${actual}" = '/' ]
 }
 
-@test "server/ingress: vault backend should be added when I specify a path" {
+@test "server/ingress: vhsm backend should be added when I specify a path" {
   cd `chart_dir`
 
   local actual=$(helm template \
