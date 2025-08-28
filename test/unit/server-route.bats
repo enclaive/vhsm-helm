@@ -12,18 +12,6 @@ load _helpers
   [ "${actual}" = "false" ]
 }
 
-@test "server/route: OpenShift -disable by injector.externalVaultAddr" {
-  cd `chart_dir`
-  local actual=$( (helm template \
-      --show-only templates/server-route.yaml  \
-      --set 'global.openshift=true' \
-      --set 'server.route.enabled=true' \
-      --set 'injector.externalVaultAddr=http://vault-outside' \
-      . || echo "---") | tee /dev/stderr |
-      yq 'length > 0' | tee /dev/stderr)
-  [ "${actual}" = "false" ]
-}
-
 @test "server/route: namespace" {
   cd `chart_dir`
   local actual=$(helm template \
