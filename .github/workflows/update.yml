@@ -1,9 +1,8 @@
 name: Update helm chart in registry
 on:
   push:
-    branches:
-      - main
-      - aws
+    tags:
+      - v*
 
 permissions:
   contents: read
