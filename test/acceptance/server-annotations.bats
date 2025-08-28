@@ -8,7 +8,9 @@ load _helpers
   kubectl create namespace acceptance
   kubectl config set-context --current --namespace=acceptance
 
-  helm install "$(name_prefix)" -f ./test/acceptance/server-test/annotations-overrides.yaml .
+  helm install "$(name_prefix)" \
+    --set server.extraEnvironmentVars.ENCLAIVE_LICENCE="$ENCLAIVE_LICENCE" \
+    -f ./test/acceptance/server-test/annotations-overrides.yaml .
   wait_for_running $(name_prefix)-0
 
   # service annotations
