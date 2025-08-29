@@ -12,7 +12,7 @@
 FROM harbor.enclaive.cloud/mirror/alpine:latest
 WORKDIR /root
 
-ENV BATS_VERSION "1.3.0"
+ENV BATS_VERSION="1.12.0"
 
 # base packages
 RUN apk update && apk add --no-cache --virtual .build-deps \
