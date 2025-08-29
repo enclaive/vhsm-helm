@@ -30,10 +30,7 @@ There is a make target for generating values.schema.json:
 
     make values-schema
 
-It relies on the helm [schema-gen plugin][schema-gen]. Note that some manual
-editing will be required, since several properties accept multiple data types.
-
-[schema-gen]: https://github.com/KnechtionsCoding/helm-schema-gen
+It relies on helm-schema.
 
 ## Helm test
 
