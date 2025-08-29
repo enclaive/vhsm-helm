@@ -1,0 +1,38 @@
+name: Test Acceptance
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - aws
+  pull_request:
+    branches:
+      - main
+      - aws
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  acceptance:
+    name: Acceptance tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup Bats
+        uses: bats-core/bats-action@3.0.1
+        with:
+          support-install: 'false'
+          assert-install: 'false'
+          detik-install: 'false'
+          file-install: 'false'
+
+      - name: Run acceptance tests
+        run: make test-acceptance
+        env:
+          ENCLAIVE_LICENCE: ${{ secrets.ENCLAIVE_LICENCE }}
