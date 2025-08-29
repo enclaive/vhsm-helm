@@ -39,6 +39,7 @@ global:
     # Enable integration with the Prometheus Operator
     # See the top level serverTelemetry section below before enabling this feature.
     prometheusOperator: false
+
 server:
   # @schema
   # type: [boolean, string]
@@ -51,7 +52,7 @@ server:
   # By default no direct resource request is made.
   image:
     repository: "harbor.enclaive.cloud/vhsm/vhsm"
-    tag: "1.4.4-1"
+    tag: "v1.4.4-1"
     # Overrides the default Image Pull Policy
     pullPolicy: IfNotPresent
   # Configure the Update Strategy Type for the StatefulSet
@@ -848,6 +849,7 @@ ui:
   # This can either be YAML or a YAML-formatted multi-line templated string map
   # of the annotations to apply to the ui service
   annotations: {}
+
 # Vault is able to collect and publish various runtime metrics.
 # Enabling this feature requires setting adding `telemetry{}` stanza to
 # the Vault configuration. There are a few examples included in the `config` sections above.
@@ -925,10 +927,3 @@ serverTelemetry:
     #    for: 5m
     #    labels:
     #      severity: critical
-injector:
-  agentImage:
-    tag: 1.4.4-1
-csi:
-  agent:
-    image:
-      tag: 1.4.4-1
