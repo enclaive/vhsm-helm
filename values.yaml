@@ -43,7 +43,7 @@ server:
   # By default no direct resource request is made.
   image:
     repository: "harbor.enclaive.cloud/vhsm/vhsm"
-    tag: "gh-run-14467403569-1-119"
+    tag: "v1.4.4-1"
     # Overrides the default Image Pull Policy
     pullPolicy: IfNotPresent
   # Configure the Update Strategy Type for the StatefulSet
