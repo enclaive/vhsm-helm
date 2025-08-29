@@ -23,11 +23,10 @@ The versions required are:
 
 ## Usage
 
-To install the latest version of this chart, add the Hashicorp helm repository
-and run `helm install`:
+To install the latest version of this chart, retrieve it from Enclaive Harbor:
 
 ```sh
-helm pull oci://harbor.enclaive.cloud/vhsm/vhsm \ 
+helm template oci://harbor.enclaive.cloud/vhsm/vhsm \
   --version 0.28.6 \
   --set server.extraEnvironmentVars.ENCLAIVE_LICENCE="$licence"
 ```

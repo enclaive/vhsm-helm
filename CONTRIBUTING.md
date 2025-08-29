@@ -1,25 +1,18 @@
-# Contributing to Vault Helm
+# Contributing to vHSM Helm
 
-**Please note:** We take Vault's security and our users' trust very seriously.
-If you believe you have found a security issue in Vault, please responsibly
-disclose by contacting us at security@hashicorp.com.
+**Please note:** We take vHSM's security and our users' trust very seriously.
+If you believe you have found a security issue in vHSM, please responsibly
+disclose by contacting us at security@enclaive.io.
 
 **First:** if you're unsure or afraid of _anything_, just ask or submit the
-issue or pull request anyways. You won't be yelled at for giving it your best
+issue or pull request anyway. You won't be yelled at for giving it your best
 effort. The worst that can happen is that you'll be politely asked to change
-something. We appreciate any sort of contributions, and don't want a wall of
+something. We appreciate any sort of contributions and don't want a wall of
 rules to get in the way of that.
-
-That said, if you want to ensure that a pull request is likely to be merged,
-talk to us! You can find out our thoughts and ensure that your contribution
-won't clash or be obviated by Vault's normal direction. A great way to do this
-is via the [Vault Discussion Forum][1].
 
 This document will cover what we're looking for in terms of reporting issues.
 By addressing all the points we're looking for, it raises the chances we can
 quickly merge or address your contributions.
-
-[1]: https://discuss.hashicorp.com/c/vault
 
 ## Issues
 
@@ -31,16 +24,16 @@ quickly merge or address your contributions.
   released every few months.
 
 * Provide steps to reproduce the issue, and if possible include the expected
-  results as well as the actual results. Please provide text, not screen shots!
+  results as well as the actual results. Please provide text, not screenshots!
 
-* Respond as promptly as possible to any questions made by the Vault
+* Respond as promptly as possible to any questions made by the vHSM
   team to your issue. Stale issues will be closed periodically.
 
 ### Issue Lifecycle
 
 1. The issue is reported.
 
-2. The issue is verified and categorized by a Vault Helm collaborator.
+2. The issue is verified and categorized by a vHSM Helm collaborator.
    Categorization is done via tags. For example, bugs are marked as "bugs".
 
 3. Unless it is critical, the issue may be left for a period of time (sometimes
@@ -79,7 +72,7 @@ The following are the instructions for running bats tests using a Docker contain
 First, build the Docker image for running the tests:
 
 ```shell
-docker build -f ${PWD}/test/docker/Test.dockerfile ${PWD}/test/docker/ -t vhsm-helm-test
+docker build -f ${PWD}/test/docker/Dockerfile ${PWD}/test/docker/ -t vhsm-helm-test
 ```
 Next, execute the tests with the following commands:
 ```shell
@@ -231,10 +224,3 @@ Here are some examples of common test patterns:
     ```
     Here we are check the length of the command output to see if the anything is rendered.
     This style can easily be switched to check that a file is rendered instead.
-
-## Contributor License Agreement
-
-We require that all contributors sign our Contributor License Agreement ("CLA")
-before we can accept the contribution.
-
-[Learn more about why HashiCorp requires a CLA and what the CLA includes](https://www.hashicorp.com/cla)
