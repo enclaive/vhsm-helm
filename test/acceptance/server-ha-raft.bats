@@ -6,6 +6,7 @@ load _helpers
   cd `chart_dir`
 
   helm install "$(name_prefix)" \
+    --set server.extraEnvironmentVars.ENCLAIVE_LICENCE="$ENCLAIVE_LICENCE" \
     --set='server.ha.enabled=true' \
     --set='server.ha.raft.enabled=true' .
   wait_for_running $(name_prefix)-0

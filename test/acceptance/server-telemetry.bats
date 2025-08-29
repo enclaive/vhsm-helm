@@ -20,6 +20,7 @@ load _helpers
   helm install \
     --wait \
     --values ./test/acceptance/server-test/telemetry.yaml \
+    --set server.extraEnvironmentVars.ENCLAIVE_LICENCE="$ENCLAIVE_LICENCE" \
     "$(name_prefix)" .
 
   wait_for_running $(name_prefix)-0

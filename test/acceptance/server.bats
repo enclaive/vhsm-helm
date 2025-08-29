@@ -9,7 +9,9 @@ load _helpers
   kubectl create namespace acceptance
   kubectl config set-context --current --namespace=acceptance
 
-  helm install "$(name_prefix)" .
+  helm install \
+    --set server.extraEnvironmentVars.ENCLAIVE_LICENCE="$ENCLAIVE_LICENCE" \
+    "$(name_prefix)" .
   wait_for_running $(name_prefix)-0
 
   # Sealed, not initialized

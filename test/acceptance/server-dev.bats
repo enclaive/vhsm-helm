@@ -8,7 +8,8 @@ load _helpers
   kubectl create namespace acceptance
   kubectl config set-context --current --namespace=acceptance
 
-  helm install "$(name_prefix)" --set='server.dev.enabled=true' .
+  helm install "$(name_prefix)" \
+    --set='server.dev.enabled=true' .
   wait_for_running $(name_prefix)-0
 
   # Replicas
