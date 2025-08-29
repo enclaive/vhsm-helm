@@ -1,24 +1,68 @@
 name: Tests
-on: [push, workflow_dispatch]
-jobs:
-  bats-unit-tests:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-      - uses: ./.github/actions/setup-test-tools
-      - run: bats --tap --timing ./test/unit
-  chart-verifier:
-    runs-on: ubuntu-latest
-    env:
-      CHART_VERIFIER_VERSION: '1.13.13'
-    steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-      - name: Setup test tools
-        uses: ./.github/actions/setup-test-tools
-      - uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
-        with:
-          go-version: '1.24.6'
-      - run: go install "github.com/redhat-certification/chart-verifier@${CHART_VERIFIER_VERSION}"
-      - run: bats --tap --timing ./test/chart
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
 permissions:
   contents: read
+
+jobs:
+  unit:
+    name: Bats unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Run unit tests
+        run: make test-unit
+
+  chart:
+    name: Chart verifier
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+
+      - name: Install chart verifier
+        run: go install "github.com/redhat-certification/chart-verifier@${CHART_VERIFIER_VERSION}"
+        env:
+          CHART_VERIFIER_VERSION: 1.13.13
+
+      - name: Setup Bats
+        uses: bats-core/bats-action@3.0.1
+        with:
+          support-install: 'false'
+          assert-install: 'false'
+          detik-install: 'false'
+          file-install: 'false'
+
+      - name: Run chart-verifier tests
+        run: make test-chart
+
+  acceptance:
+    name: Acceptance tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup Bats
+        uses: bats-core/bats-action@3.0.1
+        with:
+          support-install: 'false'
+          assert-install: 'false'
+          detik-install: 'false'
+          file-install: 'false'
+
+      - name: Run acceptance tests
+        if: ${{ env.ENCLAIVE_LICENCE != '' }}
+        run: make test-acceptance
+        env:
+          ENCLAIVE_LICENCE: ${{ secrets.ENCLAIVE_LICENCE }}
