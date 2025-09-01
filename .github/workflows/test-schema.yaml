@@ -1,0 +1,40 @@
+name: Test Schema
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - aws
+  pull_request:
+    branches:
+      - main
+      - aws
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  chart:
+    name: Schema verifier
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+
+      - name: Install helm-schema
+        run: go install github.com/dadav/helm-schema/cmd/helm-schema@${HELM_SCHEMA_VERSION}
+        env:
+          HELM_SCHEMA_VERSION: 0.18.1
+
+      - name: Run values-schema
+        run: make values-schema
+
+      - name: Check for changes
+        run: git diff --exit-code

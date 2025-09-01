@@ -6,6 +6,9 @@ ACCEPTANCE_TESTS ?= test/acceptance
 # filter bats unit tests to run.
 UNIT_TESTS_FILTER ?= '.*'
 
+# use UNIT_TESTS_PARALLEL=$(nproc)
+UNIT_TESTS_PARALLEL ?= 1
+
 KIND_CLUSTER_NAME ?= vhsm-helm
 
 # kind k8s version
@@ -15,15 +18,16 @@ KIND_K8S_VERSION ?= v1.33.2
 values-schema:
 	helm-schema -k title,description,default,required,additionalProperties
 
-test: test-image test-bats
-
 test-image:
 	@docker build --rm -t $(TEST_IMAGE) -f $(CURDIR)/test/docker/Dockerfile $(CURDIR)
 
-test-bats: test-unit test-acceptance
+test: test-unit test-chart test-acceptance
 
-test-unit:
-	@docker run --rm -it -v ${PWD}:/helm-test $(TEST_IMAGE) bats -f $(UNIT_TESTS_FILTER) /helm-test/test/unit
+test-unit: test-image
+	@docker run --rm -i -v ${PWD}:/helm-test $(TEST_IMAGE) bats -j $(UNIT_TESTS_PARALLEL) --timing -f $(UNIT_TESTS_FILTER) /helm-test/test/unit
+
+test-chart:
+	bats --tap --timing ./test/chart
 
 test-acceptance: setup-kind acceptance
 

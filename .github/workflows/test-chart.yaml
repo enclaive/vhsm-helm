@@ -1,0 +1,45 @@
+name: Test Chart
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - aws
+  pull_request:
+    branches:
+      - main
+      - aws
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  chart:
+    name: Chart verifier
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+
+      - name: Install chart-verifier
+        run: go install "github.com/redhat-certification/chart-verifier@${CHART_VERIFIER_VERSION}"
+        env:
+          CHART_VERIFIER_VERSION: 1.13.13
+
+      - name: Setup Bats
+        uses: bats-core/bats-action@3.0.1
+        with:
+          support-install: 'false'
+          assert-install: 'false'
+          detik-install: 'false'
+          file-install: 'false'
+
+      - name: Run chart-verifier tests
+        run: make test-chart
