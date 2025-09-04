@@ -76,7 +76,6 @@ teardown_file() {
 }
 
 @test "images-are-certified" {
-    skip "Image is not Red Hat certified : harbor.enclaive.cloud/vhsm/vhsm:v1.4.4-1"
     check_result v1.1/images-are-certified
 }
 
