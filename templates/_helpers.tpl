@@ -381,7 +381,7 @@ securityContext for the statefulset pod template.
       securityContext:
         runAsNonRoot: true
         runAsGroup: {{ .Values.server.gid | default 1000 }}
-        runAsUser: {{ .Values.server.uid | default 100 }}
+        runAsUser: {{ .Values.server.uid | default 999 }}
         fsGroup: {{ .Values.server.gid | default 1000 }}
   {{- end }}
 {{- end -}}
