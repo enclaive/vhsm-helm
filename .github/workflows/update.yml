@@ -27,7 +27,14 @@ jobs:
         with:
           registry: harbor.enclaive.cloud
           username: ${{ vars.HARBOR_USERNAME }}
-          password: ${{ secrets.HARBOR_SECRET }}
+          password: ${{ secrets.HARBOR_PASSWORD }}
+
+      - name: Login to migration harbor
+        uses: docker/login-action@v3
+        with:
+          registry: harbor.migration.enclaive.cloud
+          username: ${{ vars.HARBOR_USERNAME_MIG }}
+          password: ${{ secrets.HARBOR_PASSWORD_MIG }}
 
       - name: Package, upload, cosign
         env:
@@ -37,7 +44,11 @@ jobs:
           helm lint .
           helm package .
           helm inspect chart vhsm-*.tgz
+
           helm push vhsm-*.tgz oci://harbor.enclaive.cloud/vhsm 2> metadata.txt
-          
+          helm push vhsm-*.tgz oci://harbor.migration.enclaive.cloud/vhsm 2> metadata.txt
+
+          cat metadata.txt
+
           DIGEST=$(grep ^Digest: metadata.txt | cut -d" " -f2)
           cosign sign --yes --key env://COSIGN_PRIVATE_KEY "harbor.enclaive.cloud/vhsm/vhsm@${DIGEST}"
