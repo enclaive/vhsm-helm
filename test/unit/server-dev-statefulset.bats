@@ -382,7 +382,7 @@ load _helpers
       --set 'server.dev.enabled=true' \
       . | tee /dev/stderr |
       yq -r '.spec.template.spec.securityContext.runAsUser' | tee /dev/stderr)
-  [ "${actual}" = "100" ]
+  [ "${actual}" = "999" ]
 }
 
 @test "server/dev-StatefulSet: uid configurable" {

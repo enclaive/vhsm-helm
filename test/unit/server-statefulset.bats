@@ -1169,7 +1169,7 @@ load _helpers
       --show-only templates/server-statefulset.yaml \
       . | tee /dev/stderr |
       yq -r '.spec.template.spec.securityContext.runAsUser' | tee /dev/stderr)
-  [ "${actual}" = "100" ]
+  [ "${actual}" = "999" ]
 }
 
 @test "server/standalone-StatefulSet: uid configurable" {

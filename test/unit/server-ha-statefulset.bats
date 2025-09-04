@@ -700,7 +700,7 @@ local value=$(echo $rendered |
       --set 'server.ha.enabled=true' \
       . | tee /dev/stderr |
       yq -r '.spec.template.spec.securityContext.runAsUser' | tee /dev/stderr)
-  [ "${actual}" = "100" ]
+  [ "${actual}" = "999" ]
 }
 
 @test "server/ha-StatefulSet: uid configurable" {
