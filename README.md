@@ -27,7 +27,7 @@ To install the latest version of this chart, retrieve it from Enclaive Harbor:
 
 ```sh
 helm template oci://harbor.enclaive.cloud/vhsm/vhsm \
-  --version 0.29.1 \
+  --version 0.29.2 \
   --set server.extraEnvironmentVars.ENCLAIVE_LICENCE="$licence"
 ```
 

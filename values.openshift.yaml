@@ -9,7 +9,7 @@ global:
 server:
   image:
     repository: "quay.io/enclaive/vhsm"
-    tag: "v1.4.4-1"
+    tag: "v1.4.6-0"
 
   readinessProbe:
     path: "/v1/sys/health?uninitcode=204"
