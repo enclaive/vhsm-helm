@@ -58,7 +58,7 @@ For the three customer instances, use the matching license per ingress host.
 
 Chart reference: https://github.com/enclaive/vhsm-helm
 
-For production, pin a release tag (not `nightly`). The example below is for HA Raft with 3 replicas.
+The example below is for HA Raft with 3 replicas.
 
 ```yaml
 # helmfile.yaml
@@ -73,8 +73,8 @@ releases:
       - server:
           image:
             repository: harbor.enclaive.cloud/vhsm/vhsm
-            tag: <release-tag>          # pin a release, not nightly
-            pullPolicy: IfNotPresent
+            tag: 1.4.7-0.nightly@sha256:d870268934bfd5be38a414bfb97e0f85604646cfbb98b19749dc353a520fc5a9
+            pullPolicy: Always
 
           updateStrategyType: RollingUpdate
 
@@ -316,8 +316,6 @@ kubectl get sc <confidential-storage-class> -o yaml | grep -A1 parameters
 kubectl get runtimeclass kata-qemu-snp
 ```
 
-Full proof-of-life (artifacts in S3, runtime on every node, pod inside the guest VM): https://github.com/enclaive/dyneemes-helm/blob/main/docs/podvm-verification.md
-
 ---
 
 ## 5. Calculate the firmware measurement
@@ -366,8 +364,6 @@ vhsm login -method=userpass username=<admin-username>
 vhsm auth enable -options=namespace=true nitride
 vhsm read auth/nitride/config
 ```
-
-The mount path here (`nitride`) becomes the value of `nitride.enclaive.io/mount` on the pod (Section 8). Different environments may mount it as `ratls` or another name; the annotation must match the actual mount path.
 
 ### 6.2 Register the AMD VCEK root of trust (Genoa)
 
@@ -500,7 +496,7 @@ metadata:
   namespace: <k8s-namespace>
   annotations:
     nitride.enclaive.io/vhsm:     https://<vhsm-host>
-    nitride.enclaive.io/mount:    <auth-mount-path>     # match Section 6.1
+    nitride.enclaive.io/mount:    nitride
     nitride.enclaive.io/provider: sev-snp-raw
     nitride.enclaive.io/workload: <workload-uuid>
 
@@ -563,11 +559,7 @@ kubectl apply -f confidential-pod.yaml
 
 ## 9. Verify the deployment
 
-### 9.1 Pod inside the guest VM
-
-The first proof: the pod is actually executing inside the kata guest, not on the host. Follow Section 3 of [podvm-verification.md](https://github.com/enclaive/dyneemes-helm/blob/main/docs/podvm-verification.md). At minimum compare `uname -r` and `cat /sys/class/dmi/id/product_name` between host and pod. The pod must return a different kernel and `KVM` respectively.
-
-### 9.2 Injected secrets and environment
+### 9.1 Injected secrets and environment
 
 ```bash
 kubectl exec -it -n <k8s-namespace> test -- bash
@@ -579,7 +571,7 @@ dd if=/dev/urandom of=/data/test bs=4M count=256
 sha256sum /data/test
 ```
 
-### 9.3 LUKS-encrypted volume
+### 9.2 LUKS-encrypted volume
 
 ```bash
 vhsm kv get -namespace="$TARGET" -mount buckypaper \
@@ -604,7 +596,7 @@ umount /mnt
 cryptsetup close test
 ```
 
-### 9.4 Attestation review trace
+### 9.3 Attestation review trace
 
 ```bash
 VAULT_NAMESPACE="$TARGET" vhsm list dyneemes/review
@@ -613,7 +605,7 @@ VAULT_NAMESPACE="$TARGET" vhsm read dyneemes/review/<workload-name>/<container>
 
 `item_id` is the workload UUID. `spec` is the base64-encoded CreateContainer request.
 
-### 9.5 Guest serial console (debug only)
+### 9.4 Guest serial console (debug only)
 
 ```bash
 ps aux | grep qemu
