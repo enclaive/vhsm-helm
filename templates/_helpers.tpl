@@ -643,6 +643,29 @@ Inject extra environment populated by secrets, if populated
 {{- end -}}
 {{- end -}}
 
+{{/*
+Inject the ENCLAIVE_LICENCE env var from server.licence.
+Set server.licence.value for an inline value or server.licence.secretName
+plus server.licence.secretKey for a Secret reference. Setting both is an
+error. Setting neither renders nothing, leaving ENCLAIVE_LICENCE to be
+provided through extraEnvironmentVars or extraSecretEnvironmentVars.
+*/}}
+{{- define "vault.licenceEnv" -}}
+{{- $l := .Values.server.licence -}}
+{{- if and $l.value $l.secretName -}}
+{{- fail "server.licence.value and server.licence.secretName are mutually exclusive" -}}
+{{- else if $l.value -}}
+- name: ENCLAIVE_LICENCE
+  value: {{ $l.value | quote }}
+{{- else if $l.secretName -}}
+- name: ENCLAIVE_LICENCE
+  valueFrom:
+    secretKeyRef:
+      name: {{ $l.secretName }}
+      key: {{ $l.secretKey | default "licence" }}
+{{- end -}}
+{{- end -}}
+
 {{/* Scheme for health check and local endpoint */}}
 {{- define "vault.scheme" -}}
 {{- if .Values.global.tlsDisable -}}

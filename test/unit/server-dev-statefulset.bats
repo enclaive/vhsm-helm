@@ -339,6 +339,37 @@ load _helpers
 }
 
 #--------------------------------------------------------------------
+# licence
+
+@test "server/dev-StatefulSet: licence.value renders inline env var" {
+  cd `chart_dir`
+  local object=$(helm template \
+      --show-only templates/server-statefulset.yaml  \
+      --set 'server.dev.enabled=true' \
+      --set 'server.licence.value=dev-licence' \
+      . | tee /dev/stderr |
+      yq -r '.spec.template.spec.containers[0].env' | tee /dev/stderr)
+
+  local value=$(echo $object |
+      yq -r 'map(select(.name=="ENCLAIVE_LICENCE")) | .[] .value' | tee /dev/stderr)
+  [ "${value}" = "dev-licence" ]
+}
+
+@test "server/dev-StatefulSet: licence.secretName renders valueFrom.secretKeyRef" {
+  cd `chart_dir`
+  local object=$(helm template \
+      --show-only templates/server-statefulset.yaml  \
+      --set 'server.dev.enabled=true' \
+      --set 'server.licence.secretName=dev-licence-secret' \
+      . | tee /dev/stderr |
+      yq -r '.spec.template.spec.containers[0].env' | tee /dev/stderr)
+
+  local name=$(echo $object |
+      yq -r 'map(select(.name=="ENCLAIVE_LICENCE")) | .[] .valueFrom.secretKeyRef.name' | tee /dev/stderr)
+  [ "${name}" = "dev-licence-secret" ]
+}
+
+#--------------------------------------------------------------------
 # storage class
 
 @test "server/dev-StatefulSet: can't set storageClass" {

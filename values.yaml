@@ -277,6 +277,24 @@ server:
   #   secretKey: AWS_SECRET_ACCESS_KEY
 
   # @schema
+  # type: object
+  # @schema
+  # Configures the ENCLAIVE_LICENCE environment variable that vHSM requires at
+  # startup. Provide either an inline value (not recommended for production) or
+  # a reference to an existing Kubernetes Secret. If both are set the chart
+  # fails to render. If neither is set, no licence env var is injected and the
+  # user may still configure ENCLAIVE_LICENCE through extraEnvironmentVars or
+  # extraSecretEnvironmentVars for backward compatibility.
+  licence:
+    # Inline licence string. Renders ENCLAIVE_LICENCE as a plain env var.
+    value: ""
+    # Reference an existing Kubernetes Secret containing the licence.
+    # Renders ENCLAIVE_LICENCE as a valueFrom.secretKeyRef.
+    secretName: ""
+    # Key within the referenced Secret.
+    secretKey: "licence"
+
+  # @schema
   # type: array
   # @schema
   # Deprecated: please use 'volumes' instead.
