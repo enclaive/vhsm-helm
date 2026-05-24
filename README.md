@@ -28,7 +28,18 @@ To install the latest version of this chart, retrieve it from Enclaive Harbor:
 ```sh
 helm template oci://harbor.enclaive.cloud/vhsm/vhsm \
   --version 0.29.2 \
-  --set server.extraEnvironmentVars.ENCLAIVE_LICENCE="$licence"
+  --set server.licence.value="$licence"
+```
+
+For production deployments, reference an existing Kubernetes Secret instead
+of passing the licence on the command line:
+
+```sh
+kubectl create secret generic vhsm-licence --from-literal=licence="$licence"
+
+helm template oci://harbor.enclaive.cloud/vhsm/vhsm \
+  --version 0.29.2 \
+  --set server.licence.secretName=vhsm-licence
 ```
 
 Please see the many options supported in the `values.yaml` file. 

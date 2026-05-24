@@ -414,6 +414,24 @@
           "required": [],
           "type": "object"
         },
+        "licence": {
+          "properties": {
+            "value": {
+              "required": [],
+              "type": "string"
+            },
+            "secretName": {
+              "required": [],
+              "type": "string"
+            },
+            "secretKey": {
+              "required": [],
+              "type": "string"
+            }
+          },
+          "required": [],
+          "type": "object"
+        },
         "livenessProbe": {
           "properties": {
             "enabled": {

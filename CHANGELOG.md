@@ -1,5 +1,9 @@
 ## Unreleased
 
+Features:
+
+* server: Add `server.licence` field as a first-class way to set the `ENCLAIVE_LICENCE` env var, supporting either an inline value or a reference to an existing Kubernetes Secret. Closes [GH-23](https://github.com/enclaive/vhsm-helm/issues/23).
+
 ## 0.28.1 (Januar 15, 2025)
 
 Changes:

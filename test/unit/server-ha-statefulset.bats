@@ -396,6 +396,37 @@ load _helpers
 }
 
 #--------------------------------------------------------------------
+# licence
+
+@test "server/ha-StatefulSet: licence.value renders inline env var" {
+  cd `chart_dir`
+  local object=$(helm template \
+      --show-only templates/server-statefulset.yaml  \
+      --set 'server.ha.enabled=true' \
+      --set 'server.licence.value=ha-licence' \
+      . | tee /dev/stderr |
+      yq -r '.spec.template.spec.containers[0].env' | tee /dev/stderr)
+
+  local value=$(echo $object |
+      yq -r 'map(select(.name=="ENCLAIVE_LICENCE")) | .[] .value' | tee /dev/stderr)
+  [ "${value}" = "ha-licence" ]
+}
+
+@test "server/ha-StatefulSet: licence.secretName renders valueFrom.secretKeyRef" {
+  cd `chart_dir`
+  local object=$(helm template \
+      --show-only templates/server-statefulset.yaml  \
+      --set 'server.ha.enabled=true' \
+      --set 'server.licence.secretName=ha-licence-secret' \
+      . | tee /dev/stderr |
+      yq -r '.spec.template.spec.containers[0].env' | tee /dev/stderr)
+
+  local name=$(echo $object |
+      yq -r 'map(select(.name=="ENCLAIVE_LICENCE")) | .[] .valueFrom.secretKeyRef.name' | tee /dev/stderr)
+  [ "${name}" = "ha-licence-secret" ]
+}
+
+#--------------------------------------------------------------------
 # VAULT_API_ADDR renders
 
 @test "server/ha-StatefulSet: api addr renders to Pod IP by default" {

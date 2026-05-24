@@ -643,6 +643,81 @@ load _helpers
 }
 
 #--------------------------------------------------------------------
+# licence
+
+@test "server/standalone-StatefulSet: licence not rendered by default" {
+  cd `chart_dir`
+  local object=$(helm template \
+      --show-only templates/server-statefulset.yaml  \
+      --set 'server.standalone.enabled=true' \
+      . | tee /dev/stderr |
+      yq -r '.spec.template.spec.containers[0].env' | tee /dev/stderr)
+
+  local count=$(echo $object |
+      yq -r 'map(select(.name=="ENCLAIVE_LICENCE")) | length' | tee /dev/stderr)
+  [ "${count}" = "0" ]
+}
+
+@test "server/standalone-StatefulSet: licence.value renders inline env var" {
+  cd `chart_dir`
+  local object=$(helm template \
+      --show-only templates/server-statefulset.yaml  \
+      --set 'server.standalone.enabled=true' \
+      --set 'server.licence.value=test-licence-123' \
+      . | tee /dev/stderr |
+      yq -r '.spec.template.spec.containers[0].env' | tee /dev/stderr)
+
+  local value=$(echo $object |
+      yq -r 'map(select(.name=="ENCLAIVE_LICENCE")) | .[] .value' | tee /dev/stderr)
+  [ "${value}" = "test-licence-123" ]
+}
+
+@test "server/standalone-StatefulSet: licence.secretName renders valueFrom.secretKeyRef" {
+  cd `chart_dir`
+  local object=$(helm template \
+      --show-only templates/server-statefulset.yaml  \
+      --set 'server.standalone.enabled=true' \
+      --set 'server.licence.secretName=my-licence-secret' \
+      . | tee /dev/stderr |
+      yq -r '.spec.template.spec.containers[0].env' | tee /dev/stderr)
+
+  local name=$(echo $object |
+      yq -r 'map(select(.name=="ENCLAIVE_LICENCE")) | .[] .valueFrom.secretKeyRef.name' | tee /dev/stderr)
+  [ "${name}" = "my-licence-secret" ]
+
+  local key=$(echo $object |
+      yq -r 'map(select(.name=="ENCLAIVE_LICENCE")) | .[] .valueFrom.secretKeyRef.key' | tee /dev/stderr)
+  [ "${key}" = "licence" ]
+}
+
+@test "server/standalone-StatefulSet: licence.secretKey overrides default key" {
+  cd `chart_dir`
+  local object=$(helm template \
+      --show-only templates/server-statefulset.yaml  \
+      --set 'server.standalone.enabled=true' \
+      --set 'server.licence.secretName=my-licence-secret' \
+      --set 'server.licence.secretKey=custom-key' \
+      . | tee /dev/stderr |
+      yq -r '.spec.template.spec.containers[0].env' | tee /dev/stderr)
+
+  local key=$(echo $object |
+      yq -r 'map(select(.name=="ENCLAIVE_LICENCE")) | .[] .valueFrom.secretKeyRef.key' | tee /dev/stderr)
+  [ "${key}" = "custom-key" ]
+}
+
+@test "server/standalone-StatefulSet: licence.value and licence.secretName together fail" {
+  cd `chart_dir`
+  run helm template \
+      --show-only templates/server-statefulset.yaml  \
+      --set 'server.standalone.enabled=true' \
+      --set 'server.licence.value=foo' \
+      --set 'server.licence.secretName=bar' \
+      .
+  [ "$status" -ne 0 ]
+  [[ "$output" =~ "mutually exclusive" ]]
+}
+
+#--------------------------------------------------------------------
 # storage class
 
 @test "server/standalone-StatefulSet: storageClass on claim by default" {
