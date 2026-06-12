@@ -1,0 +1,13 @@
+name: KubeLinter
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  kube-linter:
+    uses: enclaive/security-workflows/.github/workflows/kube-linter.yml@main
